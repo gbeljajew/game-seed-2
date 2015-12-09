@@ -8,15 +8,14 @@ package bin;
 import bin.game.GameInterface;
 import bin.game.GameManager;
 import bin.panels.MainPanel;
-import bin.panels.subpanels.GameScreen;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Properties;
-import javax.swing.JFrame;
-import javax.swing.Timer;
-import javax.swing.UIManager;
+import java.util.*;
+import java.util.Timer;
+import javax.swing.*;
+
+
+
 
 /**
  *there is no need to change this class
@@ -35,6 +34,15 @@ public class StartInFullscreen {
     public static void main(String[] args) 
     {
         
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex)
+        {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
         JFrame frame = new JFrame("titel comes here");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true);
@@ -52,23 +60,26 @@ public class StartInFullscreen {
         frame.setUndecorated(true);
         frame.setBounds(0, 0, desctop.width, desctop.height);
         
-        Timer t = new Timer(TIMER_DELAY, new ActionListener() {
+        frame.setVisible(true);
+        
+        Timer t = new Timer(true);
+        
+        t.scheduleAtFixedRate(new TimerTask()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) 
+            public void run()
             {
-                
-                
                 if(game.isGameRunning() && panel.isGamePanelOn())
                     game.update();
                 
                 panel.repaint();
             }
-        });
+        }, 0, TIMER_DELAY);
         
-        frame.setVisible(true);
         
-        t.start();
+
+          
     }
     
 }
