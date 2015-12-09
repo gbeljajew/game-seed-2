@@ -8,12 +8,9 @@ package bin;
 import bin.game.GameInterface;
 import bin.game.GameManager;
 import bin.panels.MainPanel;
-import bin.panels.subpanels.GameScreen;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JFrame;
-import javax.swing.Timer;
+import java.util.*;
+import javax.swing.*;
 
 /**
  *there is no need to change this class
@@ -33,6 +30,16 @@ public class StartInWindow {
     
     public static void main(String[] args) 
     {
+        
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex)
+        {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
         JFrame frame = new JFrame("titel comes here");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -46,23 +53,24 @@ public class StartInWindow {
         frame.pack();
         frame.setLocationRelativeTo(null);
         
-        Timer t = new Timer(TIMER_DELAY, new ActionListener() {
+        java.util.Timer t = new java.util.Timer(true);
+        
+        t.scheduleAtFixedRate(new TimerTask()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) 
+            public void run()
             {
-                
-                
                 if(game.isGameRunning() && panel.isGamePanelOn())
                     game.update();
                 
                 panel.repaint();
             }
-        });
+        }, 0, TIMER_DELAY);
         
         frame.setVisible(true);
         
-        t.start();
+        
     }
     
 }
